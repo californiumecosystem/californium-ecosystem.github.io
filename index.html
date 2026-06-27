@@ -6,7 +6,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    
     <title>Californium — Digital Infrastructure & Computing Ecosystem | Official Whitepaper</title>
     <meta name="description" content="Californium is a progressive, supply-capped Digital Infrastructure & Computing Ecosystem capped at 10,000,000 CCUs, governed by a mathematical incremental pricing algorithm and a dual-layered tier-lock protocol." />
     <meta name="keywords" content="Californium, CCU, Compute Units, Digital Infrastructure, Enterprise IT, Cloud Computing Ecosystem, Whitepaper, Tiered Allocation, Proprietorship Council" />
@@ -18,7 +17,7 @@
     <meta property="og:title" content="Californium — Digital Infrastructure & Computing Ecosystem" />
     <meta property="og:description" content="A supply-capped, mathematically governed computing ecosystem. 10M CCUs. 5 Tiers. Zero volatility." />
     <meta property="og:site_name" content="Californium" />
-    <meta property="og:url" content="https://your-username.github.io/" />
+    <meta property="og:url" content="https://californiumecosystem.online/" />
     <meta property="og:image" content="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200&q=80" />
     
     <meta name="twitter:card" content="summary_large_image" />
@@ -302,6 +301,19 @@
         .nav-links a:hover {
             color: var(--text);
             background: var(--glass-strong);
+        }
+
+        /* ===== BOOKING LINK HIGHLIGHT IN NAV ===== */
+        .nav-links a.nav-booking {
+            color: var(--accent);
+            background: rgba(0, 229, 255, 0.08);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            font-weight: 600;
+        }
+
+        .nav-links a.nav-booking:hover {
+            background: rgba(0, 229, 255, 0.18);
+            color: var(--accent);
         }
 
         .nav-cta {
@@ -1058,6 +1070,228 @@
 
         .reveal.visible { opacity: 1; transform: translateY(0); }
 
+        /* ===== BOOKING SECTION STYLES ===== */
+        #booking {
+            padding: 110px 0;
+        }
+
+        .californium-form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px;
+            background: var(--glass);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 36px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 28px;
+        }
+
+        .form-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 2.5vw, 2rem);
+            font-weight: 700;
+            color: var(--text);
+            margin: 16px 0 10px;
+            letter-spacing: -0.02em;
+        }
+
+        .form-header p {
+            color: var(--text-muted);
+            font-size: 0.97rem;
+            line-height: 1.65;
+        }
+
+        .form-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 229, 255, 0.08);
+            color: var(--accent);
+            padding: 7px 16px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            font-family: var(--font-mono);
+        }
+
+        .form-badge::before {
+            content: "";
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 10px;
+        }
+
+        .required { color: var(--danger); }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="number"],
+        .form-group input[type="tel"] {
+            padding: 14px 16px;
+            background: var(--bg-void);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 0.97rem;
+            font-family: var(--font-body);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(0,229,255,0.1);
+        }
+
+        .declaration-card {
+            background: rgba(0, 229, 255, 0.03);
+            padding: 18px;
+            border-radius: 12px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .checkbox-label input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0; width: 0;
+        }
+
+        .custom-checkbox {
+            height: 18px; width: 18px;
+            background-color: var(--bg-void);
+            border: 1px solid var(--border-strong);
+            border-radius: 4px;
+            margin-right: 14px;
+            margin-top: 2px;
+            flex-shrink: 0;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .checkbox-label input:checked ~ .custom-checkbox {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .custom-checkbox:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 6px; top: 2px;
+            width: 4px; height: 8px;
+            border: solid var(--bg-void);
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-label input:checked ~ .custom-checkbox:after {
+            display: block;
+        }
+
+        .checkbox-label .text {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+        }
+
+        .terms-box {
+            border-left-color: var(--accent-2);
+            background: rgba(255, 181, 71, 0.04);
+        }
+
+        .terms-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 14px;
+            border-radius: 8px;
+            line-height: 1.6;
+            border: 1px solid rgba(255, 181, 71, 0.15);
+        }
+
+        .terms-text strong { color: var(--accent-2); }
+
+        .form-submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--accent), #00B8D4);
+            color: var(--bg-void);
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: var(--font-body);
+            cursor: pointer;
+            transition: transform 0.25s cubic-bezier(.4,0,.2,1), box-shadow 0.25s;
+            box-shadow: 0 8px 32px -8px var(--accent-glow);
+            margin-top: 8px;
+            letter-spacing: 0.02em;
+        }
+
+        .form-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px -8px var(--accent-glow);
+        }
+
+        /* ===== SUCCESS MESSAGE ===== */
+        .success-msg {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-msg.visible { display: block; }
+
+        .success-icon {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            background: rgba(74, 222, 128, 0.12);
+            border: 2px solid var(--success);
+            display: grid;
+            place-items: center;
+            font-size: 1.8rem;
+            margin: 0 auto 20px;
+        }
+
+        .success-msg h3 { color: var(--success); margin-bottom: 10px; }
+        .success-msg p { color: var(--text-muted); }
+
         @media (max-width: 1024px) {
             .hero-grid { grid-template-columns: 1fr; gap: 60px; }
             .hero-visual { max-width: 380px; margin: 0 auto; }
@@ -1094,6 +1328,7 @@
             .tl-dot { left: 10px; }
             .wp-banner { flex-direction: column; align-items: flex-start; padding: 32px; }
             .ps-card, .gov-card, .about-card { padding: 28px; }
+            .californium-form-container { padding: 24px 18px; }
         }
     </style>
 </head>
@@ -1115,9 +1350,10 @@
                 <a href="#governance">Governance</a>
                 <a href="#roadmap">Roadmap</a>
                 <a href="#faq">FAQ</a>
+                <a href="#booking" class="nav-booking">Booking</a>
             </nav>
             <div class="nav-cta">
-                <a href="#contact" class="btn btn-primary btn-sm">Get Access</a>
+                <a href="#booking" class="btn btn-primary btn-sm">Get Access</a>
                 <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span></button>
             </div>
         </div>
@@ -1160,7 +1396,7 @@
                         <div class="ring"></div>
                         <div class="ring ring-2"></div>
                         <div class="ring ring-3"></div>
-                        <div class="core"</div>
+                        <div class="core"></div>
                     </div>
                 </div>
             </div>
@@ -1395,6 +1631,114 @@
             </div>
         </section>
 
+        <!-- ===== BOOKING SECTION — GOOGLE FORM CONNECTED ===== -->
+        <section id="booking">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="eyebrow">Official Allocation Gateway</span>
+                    <h2>Book Your <span class="gradient-text">CCU Allocation.</span></h2>
+                    <p>Complete the secure registration below. Your data will automatically sync with the Californium Master Ledger via Google's secure infrastructure.</p>
+                </div>
+
+                <div class="californium-form-container reveal">
+                    <div class="form-header">
+                        <span class="form-badge">Tier 1 Live · ₹5.00 / CCU</span>
+                        <h2>Official Allocation &amp; Booking Gateway</h2>
+                        <p>Complete all required fields accurately. Upon submission, your allocation request will programmatically sync with the Master Ledger for transaction clearance.</p>
+                    </div>
+
+                    <!-- SUCCESS MESSAGE (hidden by default) -->
+                    <div class="success-msg" id="successMsg">
+                        <div class="success-icon">✓</div>
+                        <h3>Allocation Request Submitted!</h3>
+                        <p>Your transaction data has been routed to the Master Ledger for algorithmic validation. An official Californium Payment Receipt will be dispatched to your registered contact channel within 24 hours.</p>
+                    </div>
+
+                    <!-- FORM — posts to Google Form directly -->
+                    <form
+                        id="ccuBookingForm"
+                        action="https://docs.google.com/forms/d/e/1FAIpQLSdwJu6bEoT4epFZrU9aLSIrWmKesg0mvCFRLO7QqxC6YNFZTg/formResponse"
+                        method="POST"
+                        target="hidden_iframe"
+                        onsubmit="handleSubmit()">
+
+                        <div class="form-group">
+                            <label>Your Name (As per Aadhaar Card) <span class="required">*</span></label>
+                            <input type="text" name="entry.2116286651" placeholder="Enter your full legal name" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Phone Number <span class="required">*</span></label>
+                            <input type="tel" name="entry.1472106626" placeholder="Enter active contact number" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email ID <span class="required">*</span></label>
+                            <input type="email" name="entry.1195938397" placeholder="Enter your official email address" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Address (City - District - State) <span class="required">*</span></label>
+                            <input type="text" name="entry.2060087550" placeholder="e.g., Krishnanagar - Nadia - West Bengal" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Subscription Quantity (CCU Volume) <span class="required">*</span></label>
+                            <input type="number" name="entry.1364353950" placeholder="Enter number of Compute Units to book" min="1" required />
+                        </div>
+
+                        <div class="form-group checkbox-group declaration-card">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="entry.1635863689" value="Done" required />
+                                <span class="custom-checkbox"></span>
+                                <span class="text">I have scanned the official gateway QR code and completed the payment assignment (₹5.00 per CCU). <span class="required">*</span></span>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Payment Transaction ID / UTR <span class="required">*</span></label>
+                            <input type="text" name="entry.1783316464" placeholder="Enter the UTR or Transaction reference number" required />
+                        </div>
+
+                        <div class="form-group checkbox-group declaration-card">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="entry.1697443495" value="I am purchasing Californium service credits for accessing digital infrastructure services." required />
+                                <span class="custom-checkbox"></span>
+                                <span class="text">I am purchasing Californium service credits for accessing digital infrastructure services. <span class="required">*</span></span>
+                            </label>
+                        </div>
+
+                        <div class="form-group checkbox-group declaration-card">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="entry.1304668663" value="I understand that CCUs are utility/service credits only and do not represent shares, securities, investments, deposits, guaranteed returns, or profit-generating instruments." required />
+                                <span class="custom-checkbox"></span>
+                                <span class="text">I understand that CCUs are utility/service credits only and do not represent shares, securities, investments, deposits, guaranteed returns, or profit-generating instruments. <span class="required">*</span></span>
+                            </label>
+                        </div>
+
+                        <div class="form-group checkbox-group declaration-card terms-box">
+                            <p class="terms-text"><strong>Protocol Hard Rules &amp; Risk Acknowledgement:</strong> CCU is strictly a Digital Cloud Infrastructure Service Credit. Allocations represent an immediate and permanent reservation of server data-node capacity. All transactions are non-refundable. Foundational Stage lock-in restricts P2P transfers during Tier 1 &amp; 2. Subject to exclusive jurisdiction of Nadia, West Bengal, India.</p>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="entry.2115375057" value="I have read, understood, and I agree to all the terms and conditions stated above." required />
+                                <span class="custom-checkbox"></span>
+                                <span class="text">I have read, understood, and explicitly agree to all system terms, conditions, and protocol rules stated above. <span class="required">*</span></span>
+                            </label>
+                        </div>
+
+                        <!-- Hidden Google Form required fields -->
+                        <input type="hidden" name="fvv" value="1" />
+                        <input type="hidden" name="fbzx" value="2927291264038682768" />
+                        <input type="hidden" name="pageHistory" value="0" />
+
+                        <button type="submit" class="form-submit-btn">Submit Booking Request →</button>
+                    </form>
+
+                    <!-- Invisible iframe that catches the Google Form response -->
+                    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+                </div>
+            </div>
+        </section>
+
         <section id="contact">
             <div class="container">
                 <div class="section-head reveal">
@@ -1430,309 +1774,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-</body<div class="californium-form-container">
-    <div class="form-header">
-        <span class="badge">Tier 1 Live (₹5.00 / CCU)</span>
-        <h2>Official Allocation & Booking Gateway</h2>
-        <p>Complete the secure registration below. Your allocation request will programmatically sync with the Californium Master Ledger for transaction clearance.</p>
-    </div>
-
-    <!-- Main Form Element -->
-    <form action="https://google.com"
-          method="POST"
-          target="hidden_iframe"
-          id="ccuBookingForm"
-          onsubmit="submitted=true;">
-
-        <!-- Your Name -->
-        <div class="form-group">
-            <label>Your Name (As per Aadhaar Card) <span class="required">*</span></label>
-            <input type="text" name="entry.2116286651" placeholder="Enter your full legal name" required>
-        </div>
-
-        <!-- Phone Number -->
-        <div class="form-group">
-            <label>Phone Number <span class="required">*</span></label>
-            <input type="tel" name="entry.1472106626" placeholder="Enter active contact number" required>
-        </div>
-
-        <!-- Email ID -->
-        <div class="form-group">
-            <label>Email ID <span class="required">*</span></label>
-            <input type="email" name="entry.1195938397" placeholder="Enter your official email address" required>
-        </div>
-
-        <!-- Address -->
-        <div class="form-group">
-            <label>Address (City - District - State) <span class="required">*</span></label>
-            <input type="text" name="entry.2060087550" placeholder="e.g., Krishnanagar - Nadia - West Bengal" required>
-        </div>
-
-        <!-- Subscription Quantity -->
-        <div class="form-group">
-            <label>Subscription Quantity (CCU Volume) <span class="required">*</span></label>
-            <input type="number" name="entry.1364353950" placeholder="Enter number of Compute Units to book" required>
-        </div>
-
-        <!-- QR Code Payment Confirmation Checklist -->
-        <div class="form-group checkbox-group declaration-card">
-            <label class="checkbox-label">
-                <input type="checkbox" name="entry.1635863689" value="Done" required>
-                <span class="custom-checkbox"></span>
-                <span class="text">I have scanned the official gateway QR code and completed the payment assignment (₹5.00 per CCU). <span class="required">*</span></span>
-            </label>
-        </div>
-
-        <!-- Payment Transaction ID -->
-        <div class="form-group">
-            <label>Payment Transaction ID / UTR <span class="required">*</span></label>
-            <input type="text" name="entry.1783316464" placeholder="Enter the 12-digit UTR or Transaction reference number" required>
-        </div>
-
-        <!-- Purpose of Purchase Declaration -->
-        <div class="form-group checkbox-group declaration-card">
-            <label class="checkbox-label">
-                <input type="checkbox" name="entry.1697443495" value="I am purchasing Californium service credits for accessing digital infrastructure services." required>
-                <span class="custom-checkbox"></span>
-                <span class="text">I am purchasing Californium service credits for accessing digital infrastructure services. <span class="required">*</span></span>
-            </label>
-        </div>
-
-        <!-- Investment Disclaimer Check -->
-        <div class="form-group checkbox-group declaration-card">
-            <label class="checkbox-label">
-                <input type="checkbox" name="entry.1304668663" value="I understand that CCUs are utility/service credits only and do not represent shares, securities, investments, deposits, guaranteed returns, or profit-generating instruments." required>
-                <span class="custom-checkbox"></span>
-                <span class="text">I understand that CCUs are utility/service credits only and do not represent shares, securities, investments, deposits, guaranteed returns, or profit-generating instruments. <span class="required">*</span></span>
-            </label>
-        </div>
-
-        <!-- Rules, Terms & Conditions Frame -->
-        <div class="form-group checkbox-group declaration-card terms-box">
-            <p class="terms-text"><strong>Protocol Hard Rules & Risk Acknowledgement:</strong> CCU is strictly a Digital Cloud Infrastructure Service Credit. Allocations represent an immediate and permanent reservation of server data-node capacity. All transactions are non-refundable. Foundational Stage lock-in restricts P2P transfers during Tier 1 & 2. Subject to exclusive jurisdiction of Nadia, West Bengal, India.</p>
-            <label class="checkbox-label">
-                <input type="checkbox" name="entry.2115375057" value="I have read, understood, and I agree to all the terms and conditions stated above." required>
-                <span class="custom-checkbox"></span>
-                <span class="text">I have read, understood, and explicitly agree to all system terms, conditions, and protocol rules stated above. <span class="required">*</span></span>
-            </label>
-        </div>
-
-        <!-- Core Google Form Hidden Parameters -->
-        <input type="hidden" name="fvv" value="1">
-        <input type="hidden" name="fbzx" value="2927291264038682768">
-        <input type="hidden" name="pageHistory" value="0">
-
-        <!-- Action Submit Button -->
-        <button type="submit" class="form-submit-btn">Submit Booking Request</button>
-    </form>
-
-    <!-- Invisible Background Worker for Seamless Google Form Intercept -->
-    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { handleFormSuccess(); }"></iframe>
-</div>
-
-<!-- Ecosystem Aligned Premium UI Styling -->
-<style>
-.californium-form-container {
-    max-width: 650px;
-    margin: 40px auto;
-    padding: 35px 25px;
-    background: #090d1a; /* Matches Californium Ecosystem Dark UI Base */
-    border: 1px solid #131c38;
-    border-radius: 14px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-    color: #ffffff;
-}
-.form-header {
-    text-align: center;
-    margin-bottom: 32px;
-    border-bottom: 1px solid #131c38;
-    padding-bottom: 24px;
-}
-.form-header h2 {
-    font-size: 24px;
-    font-weight: 700;
-    color: #38bdf8; /* Californium Core Cyan */
-    margin: 14px 0 8px 0;
-    letter-spacing: -0.5px;
-}
-.form-header p {
-    color: #64748b;
-    font-size: 14px;
-    line-height: 1.6;
-}
-.badge {
-    background: rgba(56, 189, 248, 0.08);
-    color: #38bdf8;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border: 1px solid rgba(56, 189, 248, 0.2);
-}
-.form-group {
-    margin-bottom: 24px;
-    display: flex;
-    flex-direction: column;
-}
-.form-group label {
-    font-size: 13.5px;
-    color: #94a3b8;
-    margin-bottom: 10px;
-    font-weight: 500;
-}
-.required { 
-    color: #f43f5e; 
-}
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="number"],
-.form-group input[type="tel"] {
-    padding: 13px 16px;
-    background: #0f172a;
-    border: 1px solid #1e293b;
-    border-radius: 8px;
-    color: #ffffff;
-    font-size: 14.5px;
-    transition: all 0.25s ease;
-}
-.form-group input:focus {
-    border-color: #38bdf8;
-    outline: none;
-    box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
-}
-.declaration-card {
-    background: #0d1527;
-    padding: 16px;
-    border-radius: 8px;
-    border-left: 3px solid #38bdf8;
-}
-.checkbox-label {
-    display: flex;
-    align-items: flex-start;
-    cursor: pointer;
-    position: relative;
-}
-.checkbox-label input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0; width: 0;
-}
-.custom-checkbox {
-    height: 18px; width: 18px;
-    background-color: #0f172a;
-    border: 1px solid #334155;
-    border-radius: 4px;
-    margin-right: 14px;
-    margin-top: 2px;
-    flex-shrink: 0;
-    position: relative;
-    transition: all 0.2s;
-}
-.checkbox-label input:checked ~ .custom-checkbox {
-    background-color: #38bdf8;
-    border-color: #38bdf8;
-}
-.custom-checkbox:after {
-    content: "";
-    position: absolute;
-    display: none;
-    left: 6px; top: 2px;
-    width: 4px; height: 8px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-}
-.checkbox-label input:checked ~ .custom-checkbox:after { 
-    display: block; 
-}
-.checkbox-label .text {
-    font-size: 13px;
-    color: #cbd5e1;
-    line-height: 1.5;
-}
-.terms-box {
-    border-left-color: #ef4444;
-    background: #1a1018;
-}
-.terms-text {
-    font-size: 11.5px;
-    color: #94a3b8;
-    margin-bottom: 14px;
-    background: rgba(0, 0, 0, 0.25);
-    padding: 12px;
-    border-radius: 6px;
-    line-height: 1.5;
-    border: 1px solid rgba(239, 68, 68, 0.15);
-}
-.form-submit-btn {
-    background: linear-gradient(135deg, #38bdf8, #1d4ed8);
-    color: white;
-    padding: 15px;
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 4px 20px rgba(29, 78, 216, 0.3);
-    margin-top: 8px;
-    letter-spacing: 0.3px;
-}
-.form-submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 24px rgba(56, 189, 248, 0.4);
-}
-</style>
-
-<!-- Intercept Logic Execution Client-side -->
-<script>
-var submitted = false;
-function handleFormSuccess() {
-    alert("Allocation Request Submitted Successfully.\n\nYour transaction data has been routed to the Master Ledger for algorithmic validation. Upon successful ledger clearance, an official Californium Payment Receipt will be dispatched to your registered contact channel within 24 hours.");
-    document.getElementById("ccuBookingForm").reset();
-    window.location.reload();
-}
-</script>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
                     <form class="form glass reveal" onsubmit="event.preventDefault(); this.querySelector('button').textContent='✓ Message Queued'; this.reset();">
                         <div class="field">
                             <label for="name">Full Name</label>
@@ -1784,8 +1825,8 @@ function handleFormSuccess() {
                     <ul>
                         <li><a href="#whitepaper">Whitepaper v1.0</a></li>
                         <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#booking">Booking</a></li>
                         <li><a href="#contact">Contact</a></li>
-                        <li><a href="#">Terms of Service</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -1808,25 +1849,27 @@ function handleFormSuccess() {
     <button class="scroll-top" id="scrollTop" aria-label="Back to top">↑</button>
 
     <script>
+        // ===== NAV SCROLL =====
         const nav = document.getElementById('nav');
         const scrollTopBtn = document.getElementById('scrollTop');
 
         window.addEventListener('scroll', () => {
             if (window.scrollY > 40) nav.classList.add('scrolled');
             else nav.classList.remove('scrolled');
-
             if (window.scrollY > 500) scrollTopBtn.classList.add('visible');
             else scrollTopBtn.classList.remove('visible');
         });
 
         scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
+        // ===== MOBILE MENU =====
         const toggle = document.getElementById('mobileToggle');
         const navLinks = document.getElementById('navLinks');
 
         toggle.addEventListener('click', () => navLinks.classList.toggle('open'));
         navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
+        // ===== REVEAL ON SCROLL =====
         const io = new IntersectionObserver((entries) => {
             entries.forEach(e => {
                 if (e.isIntersecting) {
@@ -1838,6 +1881,7 @@ function handleFormSuccess() {
 
         document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
+        // ===== COUNTER ANIMATION =====
         const counterIO = new IntersectionObserver((entries) => {
             entries.forEach(e => {
                 if (!e.isIntersecting) return;
@@ -1845,7 +1889,6 @@ function handleFormSuccess() {
                 const target = parseFloat(el.dataset.counter);
                 const duration = 1400;
                 const start = performance.now();
-                
                 const step = (now) => {
                     const p = Math.min((now - start) / duration, 1);
                     const eased = 1 - Math.pow(1 - p, 3);
@@ -1853,7 +1896,6 @@ function handleFormSuccess() {
                     el.textContent = (target % 1 === 0) ? Math.round(val) : val.toFixed(1);
                     if (p < 1) requestAnimationFrame(step);
                 };
-                
                 requestAnimationFrame(step);
                 counterIO.unobserve(el);
             });
@@ -1861,6 +1903,7 @@ function handleFormSuccess() {
 
         document.querySelectorAll('[data-counter]').forEach(el => counterIO.observe(el));
 
+        // ===== FAQ =====
         document.querySelectorAll('.faq-item').forEach(item => {
             const q = item.querySelector('.faq-q');
             q.addEventListener('click', () => {
@@ -1870,6 +1913,7 @@ function handleFormSuccess() {
             });
         });
 
+        // ===== SMOOTH SCROLL =====
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', (e) => {
                 const id = a.getAttribute('href');
@@ -1881,23 +1925,17 @@ function handleFormSuccess() {
                 window.scrollTo({ top: y, behavior: 'smooth' });
             });
         });
+
+        // ===== GOOGLE FORM SUBMIT HANDLER =====
+        function handleSubmit() {
+            setTimeout(() => {
+                const form = document.getElementById('ccuBookingForm');
+                const successMsg = document.getElementById('successMsg');
+                form.style.display = 'none';
+                successMsg.classList.add('visible');
+            }, 800);
+        }
     </script>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+</body>
 </html>
