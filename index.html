@@ -1841,6 +1841,7 @@
     </footer>
 
     <button class="scroll-top" id="scrollTop" aria-label="Back to top">↑</button>
+    <iframe id="gform_iframe" name="gform_iframe" style="display:none;" sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
 
     <script>
         // ===== NAV SCROLL =====
@@ -1920,9 +1921,7 @@
             });
         });
 
-        // ===== APPS SCRIPT SUBMIT HANDLER =====
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPQ-_mTUQKLo6yY1fbTAAnfHrh4vJbkFEp5fxsC8JbJjpiAsK-16KpckEXPzi703N23g/exec";
-
+        // ===== GOOGLE FORM HIDDEN SUBMIT =====
         function submitToSheet(e) {
             e.preventDefault();
             const form = document.getElementById('ccuBookingForm');
@@ -1930,29 +1929,31 @@
             btn.textContent = 'Submitting...';
             btn.disabled = true;
 
+            // Build Google Form URL with all field values
+            const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdwJu6bEoT4epFZrU9aLSIrWmKesg0mvCFRLO7QqxC6YNFZTg/formResponse";
+            
             const params = new URLSearchParams();
-            params.append('name', form.querySelector('[name="entry.2116286651"]').value);
-            params.append('phone', form.querySelector('[name="entry.1472106626"]').value);
-            params.append('email', form.querySelector('[name="entry.1195938397"]').value);
-            params.append('address', form.querySelector('[name="entry.2060087550"]').value);
-            params.append('quantity', form.querySelector('[name="entry.1364353950"]').value);
-            params.append('paymentDone', form.querySelector('[name="entry.1635863689"]').checked ? "Done" : "");
-            params.append('transactionId', form.querySelector('[name="entry.1783316464"]').value);
-            params.append('purposeDeclaration', form.querySelector('[name="entry.1697443495"]').checked ? "Yes" : "");
-            params.append('investmentDisclaimer', form.querySelector('[name="entry.1304668663"]').checked ? "Yes" : "");
-            params.append('termsAgreed', form.querySelector('[name="entry.2115375057"]').checked ? "Yes" : "");
+            params.append('entry.2116286651', form.querySelector('[name="entry.2116286651"]').value);
+            params.append('entry.1472106626', form.querySelector('[name="entry.1472106626"]').value);
+            params.append('entry.1195938397', form.querySelector('[name="entry.1195938397"]').value);
+            params.append('entry.2060087550', form.querySelector('[name="entry.2060087550"]').value);
+            params.append('entry.1364353950', form.querySelector('[name="entry.1364353950"]').value);
+            params.append('entry.1635863689', form.querySelector('[name="entry.1635863689"]').checked ? "Done" : "");
+            params.append('entry.1783316464', form.querySelector('[name="entry.1783316464"]').value);
+            params.append('entry.1697443495', form.querySelector('[name="entry.1697443495"]').checked ? "I am purchasing Californium service credits for accessing digital infrastructure services." : "");
+            params.append('entry.1304668663', form.querySelector('[name="entry.1304668663"]').checked ? "I understand that CCUs are utility/service credits only and do not represent shares, securities, investments, deposits, guaranteed returns, or profit-generating instruments." : "");
+            params.append('entry.2115375057', form.querySelector('[name="entry.2115375057"]').checked ? "I have read, understood, and I agree to all the terms and conditions stated above." : "");
+            params.append('fvv', '1');
+            params.append('fbzx', '2927291264038682768');
+            params.append('pageHistory', '0');
 
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: params
-            }).then(() => {
+            // Submit via hidden iframe — Google Form receives it, Sheet gets the data
+            const iframe = document.getElementById('gform_iframe');
+            iframe.onload = function() {
                 form.style.display = 'none';
                 document.getElementById('successMsg').classList.add('visible');
-            }).catch(() => {
-                form.style.display = 'none';
-                document.getElementById('successMsg').classList.add('visible');
-            });
+            };
+            iframe.src = FORM_URL + '?' + params.toString();
         }
     </script>
 
