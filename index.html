@@ -1921,7 +1921,7 @@
         });
 
         // ===== APPS SCRIPT SUBMIT HANDLER =====
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzj68vDal8QWq5BqQdf975bef_QKplRXvCgv65b2bgavD97W6NKMn_sLnAXVTRvuOTb/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyECM1MzHKE4Hdy_HwTnC7OyK8rNKCG12HHabmZkwLG34YXVGPqeqZC7rs04g-6pkxpeA/exec";
 
         function submitToSheet(e) {
             e.preventDefault();
@@ -1930,24 +1930,22 @@
             btn.textContent = 'Submitting...';
             btn.disabled = true;
 
-            const data = {
-                name: form.querySelector('[name="entry.2116286651"]').value,
-                phone: form.querySelector('[name="entry.1472106626"]').value,
-                email: form.querySelector('[name="entry.1195938397"]').value,
-                address: form.querySelector('[name="entry.2060087550"]').value,
-                quantity: form.querySelector('[name="entry.1364353950"]').value,
-                paymentDone: form.querySelector('[name="entry.1635863689"]').checked ? "Done" : "",
-                transactionId: form.querySelector('[name="entry.1783316464"]').value,
-                purposeDeclaration: form.querySelector('[name="entry.1697443495"]').checked ? "Yes" : "",
-                investmentDisclaimer: form.querySelector('[name="entry.1304668663"]').checked ? "Yes" : "",
-                termsAgreed: form.querySelector('[name="entry.2115375057"]').checked ? "Yes" : ""
-            };
+            const params = new URLSearchParams();
+            params.append('name', form.querySelector('[name="entry.2116286651"]').value);
+            params.append('phone', form.querySelector('[name="entry.1472106626"]').value);
+            params.append('email', form.querySelector('[name="entry.1195938397"]').value);
+            params.append('address', form.querySelector('[name="entry.2060087550"]').value);
+            params.append('quantity', form.querySelector('[name="entry.1364353950"]').value);
+            params.append('paymentDone', form.querySelector('[name="entry.1635863689"]').checked ? "Done" : "");
+            params.append('transactionId', form.querySelector('[name="entry.1783316464"]').value);
+            params.append('purposeDeclaration', form.querySelector('[name="entry.1697443495"]').checked ? "Yes" : "");
+            params.append('investmentDisclaimer', form.querySelector('[name="entry.1304668663"]').checked ? "Yes" : "");
+            params.append('termsAgreed', form.querySelector('[name="entry.2115375057"]').checked ? "Yes" : "");
 
             fetch(SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: params
             }).then(() => {
                 form.style.display = 'none';
                 document.getElementById('successMsg').classList.add('visible');
