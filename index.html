@@ -1655,13 +1655,10 @@
                         <p>Your transaction data has been routed to the Master Ledger for algorithmic validation. An official Californium Payment Receipt will be dispatched to your registered contact channel within 24 hours.</p>
                     </div>
 
-                    <!-- FORM — posts to Google Form directly -->
+                    <!-- FORM — posts to Google Apps Script → Google Sheet -->
                     <form
                         id="ccuBookingForm"
-                        action="https://docs.google.com/forms/d/e/1FAIpQLSdwJu6bEoT4epFZrU9aLSIrWmKesg0mvCFRLO7QqxC6YNFZTg/formResponse"
-                        method="POST"
-                        target="hidden_iframe"
-                        onsubmit="handleSubmit()">
+                        onsubmit="submitToSheet(event)">
 
                         <div class="form-group">
                             <label>Your Name (As per Aadhaar Card) <span class="required">*</span></label>
@@ -1726,16 +1723,12 @@
                             </label>
                         </div>
 
-                        <!-- Hidden Google Form required fields -->
-                        <input type="hidden" name="fvv" value="1" />
-                        <input type="hidden" name="fbzx" value="2927291264038682768" />
-                        <input type="hidden" name="pageHistory" value="0" />
+
 
                         <button type="submit" class="form-submit-btn">Submit Booking Request →</button>
                     </form>
 
-                    <!-- Invisible iframe that catches the Google Form response -->
-                    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
                 </div>
             </div>
         </section>
@@ -1927,14 +1920,41 @@
             });
         });
 
-        // ===== GOOGLE FORM SUBMIT HANDLER =====
-        function handleSubmit() {
-            setTimeout(() => {
-                const form = document.getElementById('ccuBookingForm');
-                const successMsg = document.getElementById('successMsg');
+        // ===== APPS SCRIPT SUBMIT HANDLER =====
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzj68vDal8QWq5BqQdf975bef_QKplRXvCgv65b2bgavD97W6NKMn_sLnAXVTRvuOTb/exec";
+
+        function submitToSheet(e) {
+            e.preventDefault();
+            const form = document.getElementById('ccuBookingForm');
+            const btn = form.querySelector('.form-submit-btn');
+            btn.textContent = 'Submitting...';
+            btn.disabled = true;
+
+            const data = {
+                name: form.querySelector('[name="entry.2116286651"]').value,
+                phone: form.querySelector('[name="entry.1472106626"]').value,
+                email: form.querySelector('[name="entry.1195938397"]').value,
+                address: form.querySelector('[name="entry.2060087550"]').value,
+                quantity: form.querySelector('[name="entry.1364353950"]').value,
+                paymentDone: form.querySelector('[name="entry.1635863689"]').checked ? "Done" : "",
+                transactionId: form.querySelector('[name="entry.1783316464"]').value,
+                purposeDeclaration: form.querySelector('[name="entry.1697443495"]').checked ? "Yes" : "",
+                investmentDisclaimer: form.querySelector('[name="entry.1304668663"]').checked ? "Yes" : "",
+                termsAgreed: form.querySelector('[name="entry.2115375057"]').checked ? "Yes" : ""
+            };
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(() => {
                 form.style.display = 'none';
-                successMsg.classList.add('visible');
-            }, 800);
+                document.getElementById('successMsg').classList.add('visible');
+            }).catch(() => {
+                form.style.display = 'none';
+                document.getElementById('successMsg').classList.add('visible');
+            });
         }
     </script>
 
