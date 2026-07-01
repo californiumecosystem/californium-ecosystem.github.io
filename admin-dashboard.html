@@ -201,6 +201,18 @@
     }
     .badge-yes { background: rgba(92,224,160,0.12); color: var(--success); }
     .badge-no { background: rgba(255,107,107,0.12); color: var(--danger); }
+    .btn-delete {
+        background: rgba(255,107,107,0.1);
+        color: var(--danger);
+        border: 1px solid rgba(255,107,107,0.25);
+        padding: 6px 12px;
+        border-radius: var(--radius-sm);
+        font-size: 0.78rem;
+        white-space: nowrap;
+        transition: background 0.2s, transform 0.15s;
+    }
+    .btn-delete:hover { background: rgba(255,107,107,0.2); }
+    .btn-delete:disabled { opacity: 0.5; cursor: not-allowed; }
 
     .empty-state, .loading-state {
         text-align: center;
@@ -275,6 +287,7 @@
                             <th>CCUs</th>
                             <th>Payment</th>
                             <th>Transaction ID</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody"></tbody>
@@ -391,9 +404,24 @@
                     <td>${escapeHtml(b.ccuQuantity)}</td>
                     <td><span class="badge ${b.paymentDone === 'Yes' ? 'badge-yes' : 'badge-no'}">${escapeHtml(b.paymentDone || 'No')}</span></td>
                     <td class="cell-muted">${escapeHtml(b.transactionId)}</td>
+                    <td><button class="btn-delete" onclick="deleteBooking('${b.id}', this)">Delete</button></td>
                 </tr>
             `;
         }).join('');
+    }
+
+    // ===== DELETE BOOKING =====
+    function deleteBooking(id, btnEl) {
+        if (!confirm('এই বুকিংটা স্থায়ীভাবে মুছে ফেলতে চাও? এটা ফিরিয়ে আনা যাবে না।')) return;
+        btnEl.disabled = true;
+        btnEl.textContent = '...';
+        db.collection('bookings').doc(id).delete()
+            .catch(function(error) {
+                alert('মুছতে সমস্যা হয়েছে: ' + error.message);
+                btnEl.disabled = false;
+                btnEl.textContent = 'Delete';
+            });
+        // No need to manually re-render — onSnapshot listener updates the table automatically
     }
 
     // ===== STATS =====
