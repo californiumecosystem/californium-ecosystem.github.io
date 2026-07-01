@@ -1,0 +1,31 @@
+{
+  "name": "Californium Ecosystem",
+  "short_name": "Californium",
+  "description": "A supply-capped Digital Infrastructure & Computing Ecosystem — 10,000,000 CCUs, five tiers, mathematically governed pricing.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#05070D",
+  "theme_color": "#05070D",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

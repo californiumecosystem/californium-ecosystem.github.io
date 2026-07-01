@@ -16,6 +16,7 @@
     <meta name="author" content="Proprietorship Council — Californium" />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#05070D" />
+    <link rel="manifest" href="/manifest.json" />
     
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Californium — Digital Infrastructure & Computing Ecosystem" />
@@ -1651,18 +1652,32 @@
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
     <script>
-        // ===== FIREBASE INIT =====
-        const firebaseConfig = {
-            apiKey: "AIzaSyCELxT1xsQ9rxm6srkZjCcJIvqAeXCbv5o",
-            authDomain: "californium-ecosystem.firebaseapp.com",
-            projectId: "californium-ecosystem",
-            storageBucket: "californium-ecosystem.firebasestorage.app",
-            messagingSenderId: "939197440600",
-            appId: "1:939197440600:web:09a322d6f7ac035bf8e02d",
-            measurementId: "G-85DV7ZG64Q"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        // ===== PWA SERVICE WORKER REGISTRATION =====
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').catch(function(err) {
+                    console.log('Service worker registration failed:', err);
+                });
+            });
+        }
+
+        // ===== FIREBASE INIT (wrapped so a failure here never breaks the rest of the page) =====
+        let db = null;
+        try {
+            const firebaseConfig = {
+                apiKey: "AIzaSyCELxT1xsQ9rxm6srkZjCcJIvqAeXCbv5o",
+                authDomain: "californium-ecosystem.firebaseapp.com",
+                projectId: "californium-ecosystem",
+                storageBucket: "californium-ecosystem.firebasestorage.app",
+                messagingSenderId: "939197440600",
+                appId: "1:939197440600:web:09a322d6f7ac035bf8e02d",
+                measurementId: "G-85DV7ZG64Q"
+            };
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+        } catch (err) {
+            console.error('Firebase failed to initialize:', err);
+        }
 
         // ===== FORM SUBMITTED → SAVE TO FIRESTORE =====
         function formSubmitted(event) {
@@ -1670,6 +1685,12 @@
             const form = document.getElementById('ccuBookingForm');
             const submitBtn = form.querySelector('.form-submit-btn');
             const originalBtnText = submitBtn.textContent;
+
+            if (!db) {
+                alert('দুঃখিত, সিস্টেমের সাথে সংযোগ করতে সমস্যা হয়েছে। পেজ রিফ্রেশ করে আবার চেষ্টা করুন।');
+                return;
+            }
+
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting…';
 
