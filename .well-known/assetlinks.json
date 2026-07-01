@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "online.californiumecosystem.twa",
+    "sha256_cert_fingerprints": ["06:1C:12:89:64:48:23:B7:E1:A8:84:CE:ED:21:1B:1A:CE:5D:7B:71:14:B0:3C:C9:A7:99:EA:64:28:82:3D:3C"]
+  }
+}]
