@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Californium — Admin Dashboard</title>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<style>
+    :root {
+        --bg-void: #05070D;
+        --bg-surface: #0B0F1A;
+        --bg-elevated: #11172A;
+        --accent: #00E5FF;
+        --accent-2: #FFB547;
+        --accent-glow: rgba(0, 229, 255, 0.35);
+        --text: #E6EAF2;
+        --text-muted: #9098AD;
+        --text-dim: #5C6478;
+        --border: rgba(230, 234, 242, 0.08);
+        --radius-sm: 10px;
+        --radius: 16px;
+        --radius-lg: 22px;
+        --danger: #FF6B6B;
+        --success: #5CE0A0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg-void);
+        color: var(--text);
+        min-height: 100vh;
+    }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
+
+    /* Login screen */
+    #loginScreen {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+    }
+    .login-card {
+        width: 100%;
+        max-width: 380px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 36px 28px;
+    }
+    .login-card h1 {
+        font-size: 1.4rem;
+        margin-bottom: 6px;
+        letter-spacing: -0.02em;
+    }
+    .login-card .sub {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 26px;
+    }
+    .field { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
+    .field label {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-dim);
+    }
+    input {
+        font: inherit;
+        color: var(--text);
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 12px 14px;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    button {
+        font: inherit;
+        cursor: pointer;
+        border: none;
+        border-radius: var(--radius-sm);
+    }
+    .btn-primary {
+        width: 100%;
+        background: linear-gradient(135deg, var(--accent), #0099AA);
+        color: #001217;
+        font-weight: 700;
+        padding: 13px;
+        margin-top: 8px;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 0 24px var(--accent-glow); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    #loginError {
+        color: var(--danger);
+        font-size: 0.85rem;
+        margin-top: 12px;
+        display: none;
+    }
+
+    /* Dashboard */
+    #dashboard { display: none; }
+    header.top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 0;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 24px;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    header.top h1 {
+        font-size: 1.15rem;
+        letter-spacing: -0.01em;
+    }
+    header.top h1 span { color: var(--accent); }
+    .btn-ghost {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        padding: 9px 16px;
+        border-radius: var(--radius-sm);
+        font-size: 0.85rem;
+        transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 14px;
+        margin-bottom: 24px;
+    }
+    .stat-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 18px;
+    }
+    .stat-card .num {
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: var(--accent);
+    }
+    .stat-card .label {
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-top: 4px;
+    }
+
+    .toolbar {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .toolbar input[type="text"] { flex: 1; min-width: 200px; }
+
+    .table-wrap {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow-x: auto;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 900px; }
+    th {
+        text-align: left;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-dim);
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+    }
+    td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.88rem;
+        vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .cell-name { font-weight: 600; }
+    .cell-muted { color: var(--text-muted); }
+    .badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    .badge-yes { background: rgba(92,224,160,0.12); color: var(--success); }
+    .badge-no { background: rgba(255,107,107,0.12); color: var(--danger); }
+
+    .empty-state, .loading-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-dim);
+    }
+
+    @media (max-width: 640px) {
+        header.top { flex-direction: column; align-items: flex-start; }
+    }
+</style>
+</head>
+<body>
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen">
+        <div class="login-card">
+            <h1>Californium <span style="color:var(--accent-2)">Admin</span></h1>
+            <p class="sub">শুধুমাত্র অনুমোদিত ব্যবহারকারীদের জন্য। Firebase Authentication দিয়ে বানানো আপনার ইমেইল/পাসওয়ার্ড দিয়ে লগইন করুন।</p>
+            <form id="loginForm">
+                <div class="field">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required placeholder="you@example.com" />
+                </div>
+                <div class="field">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required placeholder="••••••••" />
+                </div>
+                <button type="submit" class="btn-primary" id="loginBtn">Log In</button>
+                <p id="loginError"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard">
+        <div class="wrap">
+            <header class="top">
+                <h1>Californium <span>Booking Submissions</span></h1>
+                <button class="btn-ghost" id="logoutBtn">Log Out</button>
+            </header>
+
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="num" id="statTotal">–</div>
+                    <div class="label">Total Submissions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="num" id="statCCUs">–</div>
+                    <div class="label">Total CCUs Booked</div>
+                </div>
+                <div class="stat-card">
+                    <div class="num" id="statToday">–</div>
+                    <div class="label">Submitted Today</div>
+                </div>
+            </div>
+
+            <div class="toolbar">
+                <input type="text" id="searchBox" placeholder="নাম, ফোন, ইমেইল বা Transaction ID দিয়ে সার্চ করুন…" />
+            </div>
+
+            <div class="table-wrap">
+                <div id="loadingState" class="loading-state">লোড হচ্ছে…</div>
+                <table id="dataTable" style="display:none;">
+                    <thead>
+                        <tr>
+                            <th>Submitted</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>CCUs</th>
+                            <th>Payment</th>
+                            <th>Transaction ID</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+                <div id="emptyState" class="empty-state" style="display:none;">এখনো কোনো সাবমিশন নেই।</div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyCELxT1xsQ9rxm6srkZjCcJIvqAeXCbv5o",
+        authDomain: "californium-ecosystem.firebaseapp.com",
+        projectId: "californium-ecosystem",
+        storageBucket: "californium-ecosystem.firebasestorage.app",
+        messagingSenderId: "939197440600",
+        appId: "1:939197440600:web:09a322d6f7ac035bf8e02d",
+        measurementId: "G-85DV7ZG64Q"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let allBookings = [];
+    let unsubscribe = null;
+
+    // ===== AUTH STATE =====
+    auth.onAuthStateChanged(function(user) {
+        if (user) {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            startListening();
+        } else {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('dashboard').style.display = 'none';
+            if (unsubscribe) unsubscribe();
+        }
+    });
+
+    // ===== LOGIN =====
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const btn = document.getElementById('loginBtn');
+        const errEl = document.getElementById('loginError');
+        errEl.style.display = 'none';
+        btn.disabled = true;
+        btn.textContent = 'Logging in…';
+
+        auth.signInWithEmailAndPassword(email, password)
+            .catch(function(error) {
+                errEl.textContent = 'লগইন ব্যর্থ হয়েছে: ভুল ইমেইল বা পাসওয়ার্ড।';
+                errEl.style.display = 'block';
+            })
+            .finally(function() {
+                btn.disabled = false;
+                btn.textContent = 'Log In';
+            });
+    });
+
+    // ===== LOGOUT =====
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+        auth.signOut();
+    });
+
+    // ===== LISTEN FOR BOOKINGS (REAL-TIME) =====
+    function startListening() {
+        document.getElementById('loadingState').style.display = 'block';
+        document.getElementById('dataTable').style.display = 'none';
+
+        unsubscribe = db.collection('bookings')
+            .orderBy('submittedAt', 'desc')
+            .onSnapshot(function(snapshot) {
+                allBookings = [];
+                snapshot.forEach(function(doc) {
+                    allBookings.push({ id: doc.id, ...doc.data() });
+                });
+                renderTable(allBookings);
+                updateStats(allBookings);
+            }, function(error) {
+                document.getElementById('loadingState').textContent = 'ডেটা লোড করতে সমস্যা হয়েছে: ' + error.message;
+            });
+    }
+
+    // ===== RENDER TABLE =====
+    function renderTable(bookings) {
+        const tbody = document.getElementById('tableBody');
+        const loadingEl = document.getElementById('loadingState');
+        const tableEl = document.getElementById('dataTable');
+        const emptyEl = document.getElementById('emptyState');
+
+        loadingEl.style.display = 'none';
+
+        if (bookings.length === 0) {
+            tableEl.style.display = 'none';
+            emptyEl.style.display = 'block';
+            return;
+        }
+
+        emptyEl.style.display = 'none';
+        tableEl.style.display = 'table';
+
+        tbody.innerHTML = bookings.map(function(b) {
+            const date = b.submittedAt && b.submittedAt.toDate ? b.submittedAt.toDate() : null;
+            const dateStr = date ? date.toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+            return `
+                <tr>
+                    <td class="cell-muted">${dateStr}</td>
+                    <td class="cell-name">${escapeHtml(b.name)}</td>
+                    <td>${escapeHtml(b.phone)}</td>
+                    <td class="cell-muted">${escapeHtml(b.email)}</td>
+                    <td class="cell-muted">${escapeHtml(b.address)}</td>
+                    <td>${escapeHtml(b.ccuQuantity)}</td>
+                    <td><span class="badge ${b.paymentDone === 'Yes' ? 'badge-yes' : 'badge-no'}">${escapeHtml(b.paymentDone || 'No')}</span></td>
+                    <td class="cell-muted">${escapeHtml(b.transactionId)}</td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // ===== STATS =====
+    function updateStats(bookings) {
+        document.getElementById('statTotal').textContent = bookings.length;
+
+        const totalCCUs = bookings.reduce(function(sum, b) {
+            return sum + (parseInt(b.ccuQuantity) || 0);
+        }, 0);
+        document.getElementById('statCCUs').textContent = totalCCUs.toLocaleString('en-IN');
+
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        const todayCount = bookings.filter(function(b) {
+            const d = b.submittedAt && b.submittedAt.toDate ? b.submittedAt.toDate() : null;
+            return d && d >= today;
+        }).length;
+        document.getElementById('statToday').textContent = todayCount;
+    }
+
+    // ===== SEARCH =====
+    document.getElementById('searchBox').addEventListener('input', function(e) {
+        const q = e.target.value.toLowerCase().trim();
+        if (!q) { renderTable(allBookings); return; }
+        const filtered = allBookings.filter(function(b) {
+            return (b.name || '').toLowerCase().includes(q) ||
+                   (b.phone || '').toLowerCase().includes(q) ||
+                   (b.email || '').toLowerCase().includes(q) ||
+                   (b.transactionId || '').toLowerCase().includes(q);
+        });
+        renderTable(filtered);
+    });
+
+    function escapeHtml(str) {
+        if (str === undefined || str === null) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+</script>
+</body>
+</html>
