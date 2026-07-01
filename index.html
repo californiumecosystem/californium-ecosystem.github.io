@@ -1459,13 +1459,10 @@
                         <p>Your transaction data has been routed to the Master Ledger for algorithmic validation. An official Californium Payment Receipt will be dispatched to your registered contact channel within 24 hours.</p>
                     </div>
 
-                    <!-- ✅ GOOGLE FORM — সরাসরি Google Sheet এ data যাবে -->
+                    <!-- ⚠️ Google Form connection সরিয়ে দেওয়া হয়েছে - এখন এই ফর্ম কোথাও data পাঠায় না -->
                     <form
                         id="ccuBookingForm"
-                        action="https://docs.google.com/forms/d/e/1FAIpQLSdwJu6bEoT4epFZrU9aLSIrWmKesg0mvCFRLO7QqxC6YNFZTg/formResponse"
-                        method="POST"
-                        target="hidden_iframe"
-                        onsubmit="formSubmitted()">
+                        onsubmit="event.preventDefault(); formSubmitted();">
 
                         <div class="form-group">
                             <label>Your Name (As per Aadhaar Card) <span class="required">*</span></label>
