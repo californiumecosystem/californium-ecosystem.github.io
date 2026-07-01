@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Firebase SDK (compat build, no build tools needed) -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.jpg">
     <meta charset="UTF-8" />
@@ -1462,7 +1465,7 @@
                     <!-- ⚠️ Google Form connection সরিয়ে দেওয়া হয়েছে - এখন এই ফর্ম কোথাও data পাঠায় না -->
                     <form
                         id="ccuBookingForm"
-                        onsubmit="event.preventDefault(); formSubmitted();">
+                        onsubmit="formSubmitted(event);">
 
                         <div class="form-group">
                             <label>Your Name (As per Aadhaar Card) <span class="required">*</span></label>
@@ -1648,12 +1651,50 @@
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
     <script>
-        // ===== FORM SUBMITTED =====
-        function formSubmitted() {
-            setTimeout(function() {
-                document.getElementById('ccuBookingForm').style.display = 'none';
-                document.getElementById('successMsg').classList.add('visible');
-            }, 1500);
+        // ===== FIREBASE INIT =====
+        const firebaseConfig = {
+            apiKey: "AIzaSyCELxT1xsQ9rxm6srkZjCcJIvqAeXCbv5o",
+            authDomain: "californium-ecosystem.firebaseapp.com",
+            projectId: "californium-ecosystem",
+            storageBucket: "californium-ecosystem.firebasestorage.app",
+            messagingSenderId: "939197440600",
+            appId: "1:939197440600:web:09a322d6f7ac035bf8e02d",
+            measurementId: "G-85DV7ZG64Q"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // ===== FORM SUBMITTED → SAVE TO FIRESTORE =====
+        function formSubmitted(event) {
+            event.preventDefault();
+            const form = document.getElementById('ccuBookingForm');
+            const submitBtn = form.querySelector('.form-submit-btn');
+            const originalBtnText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting…';
+
+            const data = {
+                name: form.querySelector('[name="entry.2116286651"]').value,
+                phone: form.querySelector('[name="entry.1472106626"]').value,
+                email: form.querySelector('[name="entry.1195938397"]').value,
+                address: form.querySelector('[name="entry.2060087550"]').value,
+                ccuQuantity: form.querySelector('[name="entry.1364353950"]').value,
+                paymentDone: form.querySelector('[name="entry.1635863689"]').checked ? "Yes" : "No",
+                transactionId: form.querySelector('[name="entry.1783316464"]').value,
+                submittedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            db.collection('bookings').add(data)
+                .then(function() {
+                    form.style.display = 'none';
+                    document.getElementById('successMsg').classList.add('visible');
+                })
+                .catch(function(error) {
+                    console.error('Error saving booking:', error);
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                    alert('দুঃখিত, সাবমিট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন। (Error: ' + error.message + ')');
+                });
         }
 
         // ===== NAV SCROLL =====
