@@ -1189,7 +1189,7 @@
                 <a href="#booking" class="nav-booking">Booking</a>
             </nav>
             <div class="nav-cta">
-                <a href="#booking" class="btn btn-primary btn-sm">Get Access</a>
+                <a href="#booking" class="btn btn-primary btn-sm">Register Free</a>
                 <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span></button>
             </div>
         </div>
@@ -1471,24 +1471,45 @@
         <!-- ========== BOOKING SECTION ========== -->
         <section id="booking">
             <div class="container">
+                <!-- 🔒 PAID-VERSION COPY (commented out, restore later by removing these comment markers)
                 <div class="section-head reveal">
                     <span class="eyebrow">Official Allocation Gateway</span>
                     <h2>Book Your <span class="gradient-text">CCU Allocation.</span></h2>
                     <p>Complete the secure registration below. Your data will automatically sync with the Californium Master Ledger via Google's secure infrastructure.</p>
                 </div>
+                -->
+                <div class="section-head reveal">
+                    <span class="eyebrow">Free Early Access Registration</span>
+                    <h2>Register Free &amp; <span class="gradient-text">Join Californium.</span></h2>
+                    <p>No payment required. Register your interest below to join our early community — we'll notify you as soon as booking opens.</p>
+                </div>
 
                 <div class="californium-form-container reveal">
+                    <!-- 🔒 PAID-VERSION HEADER (commented out for later restore)
                     <div class="form-header">
                         <span class="form-badge">Tier 1 Live · ₹5.00 / CCU</span>
                         <h2>Official Allocation &amp; Booking Gateway</h2>
                         <p>Complete all required fields accurately. Upon submission, your allocation request will programmatically sync with the Master Ledger for transaction clearance.</p>
                     </div>
+                    -->
+                    <div class="form-header">
+                        <span class="form-badge">Free Registration Open</span>
+                        <h2>Join the Californium Early Community</h2>
+                        <p>This is a completely free registration — no payment needed right now. Fill in your details below to join and get notified when booking officially opens.</p>
+                    </div>
 
                     <!-- SUCCESS MESSAGE -->
+                    <!-- 🔒 PAID-VERSION SUCCESS MESSAGE (commented out for later restore)
                     <div class="success-msg" id="successMsg">
                         <div class="success-icon">✓</div>
                         <h3>Allocation Request Submitted!</h3>
                         <p>Your transaction data has been routed to the Master Ledger for algorithmic validation. An official Californium Payment Receipt will be dispatched to your registered contact channel within 24 hours.</p>
+                    </div>
+                    -->
+                    <div class="success-msg" id="successMsg">
+                        <div class="success-icon">✓</div>
+                        <h3>Registration Successful!</h3>
+                        <p>Thank you for joining! You're now part of the Californium early community. We'll reach out to your registered contact details soon with next steps.</p>
                     </div>
 
                     <!-- ⚠️ Google Form connection সরিয়ে দেওয়া হয়েছে - এখন এই ফর্ম কোথাও data পাঠায় না -->
@@ -1517,10 +1538,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Subscription Quantity (CCU Volume) <span class="required">*</span></label>
-                            <input type="number" name="entry.1364353950" placeholder="Enter number of Compute Units to book" min="1" required />
+                            <label>Interested CCU Quantity (Non-binding) <span class="required">*</span></label>
+                            <input type="number" name="entry.1364353950" placeholder="How many Compute Units are you interested in?" min="1" required />
                         </div>
 
+                        <!-- 🔒 PAID-VERSION FIELDS (commented out for later restore — QR/payment checkbox, transaction ID, purchase declaration)
                         <div class="form-group checkbox-group declaration-card">
                             <label class="checkbox-label">
                                 <input type="checkbox" name="entry.1635863689" value="Done" required />
@@ -1541,6 +1563,15 @@
                                 <span class="text">I am purchasing Californium service credits for accessing digital infrastructure services. <span class="required">*</span></span>
                             </label>
                         </div>
+                        -->
+
+                        <div class="form-group checkbox-group declaration-card">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="entry.1697443495" value="I want to free-register and join the Californium early community." required />
+                                <span class="custom-checkbox"></span>
+                                <span class="text">I want to free-register and join the Californium early community (no payment involved right now). <span class="required">*</span></span>
+                            </label>
+                        </div>
 
                         <div class="form-group checkbox-group declaration-card">
                             <label class="checkbox-label">
@@ -1550,6 +1581,7 @@
                             </label>
                         </div>
 
+                        <!-- 🔒 PAID-VERSION TERMS BOX (commented out for later restore)
                         <div class="form-group checkbox-group declaration-card terms-box">
                             <p class="terms-text"><strong>Protocol Hard Rules &amp; Risk Acknowledgement:</strong> CCU is strictly a Digital Cloud Infrastructure Service Credit. Allocations represent an immediate and permanent reservation of server data-node capacity. All transactions are non-refundable. Foundational Stage lock-in restricts P2P transfers during Tier 1 &amp; 2. Subject to exclusive jurisdiction of Nadia, West Bengal, India.</p>
                             <label class="checkbox-label">
@@ -1558,8 +1590,17 @@
                                 <span class="text">I have read, understood, and explicitly agree to all system terms, conditions, and protocol rules stated above. <span class="required">*</span></span>
                             </label>
                         </div>
+                        -->
+                        <div class="form-group checkbox-group declaration-card terms-box">
+                            <p class="terms-text"><strong>Note:</strong> This is a free, non-binding registration to join the Californium early community. No payment is required at this stage. CCU booking and pricing will open at a later date, and registered users will be notified first.</p>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="entry.2115375057" value="I have read and understood the free registration note above." required />
+                                <span class="custom-checkbox"></span>
+                                <span class="text">I have read and understood the note above. <span class="required">*</span></span>
+                            </label>
+                        </div>
 
-                        <button type="submit" class="form-submit-btn">Submit Booking Request →</button>
+                        <button type="submit" class="form-submit-btn">Register Free →</button>
                     </form>
 
                 </div>
@@ -1728,8 +1769,10 @@
                 email: form.querySelector('[name="entry.1195938397"]').value,
                 address: form.querySelector('[name="entry.2060087550"]').value,
                 ccuQuantity: form.querySelector('[name="entry.1364353950"]').value,
-                paymentDone: form.querySelector('[name="entry.1635863689"]').checked ? "Yes" : "No",
-                transactionId: form.querySelector('[name="entry.1783316464"]').value,
+                // 🔒 PAID-VERSION FIELDS (commented out — uncomment when payment is re-enabled)
+                // paymentDone: form.querySelector('[name="entry.1635863689"]').checked ? "Yes" : "No",
+                // transactionId: form.querySelector('[name="entry.1783316464"]').value,
+                registrationType: "free",
                 submittedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
