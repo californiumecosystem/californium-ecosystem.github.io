@@ -251,7 +251,7 @@
     <div id="dashboard">
         <div class="wrap">
             <header class="top">
-                <h1>Californium <span>Booking Submissions</span></h1>
+                <h1>Californium <span>Registrations</span></h1>
                 <button class="btn-ghost" id="logoutBtn">Log Out</button>
             </header>
 
@@ -262,7 +262,7 @@
                 </div>
                 <div class="stat-card">
                     <div class="num" id="statCCUs">–</div>
-                    <div class="label">Total CCUs Booked</div>
+                    <div class="label">Total Interested CCUs</div>
                 </div>
                 <div class="stat-card">
                     <div class="num" id="statToday">–</div>
@@ -271,7 +271,7 @@
             </div>
 
             <div class="toolbar">
-                <input type="text" id="searchBox" placeholder="নাম, ফোন, ইমেইল বা Transaction ID দিয়ে সার্চ করুন…" />
+                <input type="text" id="searchBox" placeholder="নাম, ফোন বা ইমেইল দিয়ে সার্চ করুন…" />
             </div>
 
             <div class="table-wrap">
@@ -284,9 +284,12 @@
                             <th>Phone</th>
                             <th>Email</th>
                             <th>Address</th>
-                            <th>CCUs</th>
+                            <th>CCUs (Interested)</th>
+                            <!-- 🔒 PAID-VERSION COLUMN (commented out for later restore)
                             <th>Payment</th>
                             <th>Transaction ID</th>
+                            -->
+                            <th>Type</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -394,6 +397,19 @@
         tbody.innerHTML = bookings.map(function(b) {
             const date = b.submittedAt && b.submittedAt.toDate ? b.submittedAt.toDate() : null;
             const dateStr = date ? date.toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+            // 🔒 PAID-VERSION COLUMNS (commented out for later restore)
+            // const paymentCell = `<td><span class="badge ${b.paymentDone === 'Yes' ? 'badge-yes' : 'badge-no'}">${escapeHtml(b.paymentDone || 'No')}</span></td>`;
+            // const txnCell = `<td class="cell-muted">${escapeHtml(b.transactionId)}</td>`;
+
+            // Unified "Type" column — works for both old (paid) and new (free) submissions
+            let typeCell;
+            if (b.transactionId) {
+                // Old paid-booking record
+                typeCell = `<td><span class="badge ${b.paymentDone === 'Yes' ? 'badge-yes' : 'badge-no'}">Paid · ${escapeHtml(b.transactionId)}</span></td>`;
+            } else {
+                typeCell = `<td><span class="badge badge-yes">${escapeHtml(b.registrationType || 'Free')}</span></td>`;
+            }
+
             return `
                 <tr>
                     <td class="cell-muted">${dateStr}</td>
@@ -402,8 +418,7 @@
                     <td class="cell-muted">${escapeHtml(b.email)}</td>
                     <td class="cell-muted">${escapeHtml(b.address)}</td>
                     <td>${escapeHtml(b.ccuQuantity)}</td>
-                    <td><span class="badge ${b.paymentDone === 'Yes' ? 'badge-yes' : 'badge-no'}">${escapeHtml(b.paymentDone || 'No')}</span></td>
-                    <td class="cell-muted">${escapeHtml(b.transactionId)}</td>
+                    ${typeCell}
                     <td><button class="btn-delete" onclick="deleteBooking('${b.id}', this)">Delete</button></td>
                 </tr>
             `;
@@ -450,7 +465,7 @@
             return (b.name || '').toLowerCase().includes(q) ||
                    (b.phone || '').toLowerCase().includes(q) ||
                    (b.email || '').toLowerCase().includes(q) ||
-                   (b.transactionId || '').toLowerCase().includes(q);
+                   (b.transactionId || '').toLowerCase().includes(q); // kept for backward-compat with old paid records
         });
         renderTable(filtered);
     });
