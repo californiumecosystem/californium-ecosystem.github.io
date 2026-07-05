@@ -3,6 +3,7 @@
 <head>
     <!-- Firebase SDK (compat build, no build tools needed) -->
     <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.jpg">
@@ -10,18 +11,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     
-    <title>Californium Ecosystem — Digital Infrastructure & Computing Ecosystem | Official Whitepaper</title>
-    <meta name="description" content="Californium Ecosystem is a progressive, supply-capped Digital Infrastructure & Computing Ecosystem capped at 10,000,000 CCUs, governed by a mathematical incremental pricing algorithm and a dual-layered tier-lock protocol." />
-    <meta name="keywords" content="Californium Ecosystem, CCU, Compute Units, Digital Infrastructure, Enterprise IT, Cloud Computing Ecosystem, Whitepaper, Tiered Allocation, Proprietorship Council" />
+    <title>Californium — Digital Infrastructure & Computing Ecosystem | Official Whitepaper</title>
+    <meta name="description" content="Californium is a progressive, supply-capped Digital Infrastructure & Computing Ecosystem capped at 10,000,000 CCUs, governed by a mathematical incremental pricing algorithm and a dual-layered tier-lock protocol." />
+    <meta name="keywords" content="Californium, CCU, Compute Units, Digital Infrastructure, Enterprise IT, Cloud Computing Ecosystem, Whitepaper, Tiered Allocation, Proprietorship Council" />
     <meta name="author" content="Proprietorship Council — Californium" />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#05070D" />
     <link rel="manifest" href="/manifest.json" />
     
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Californium Ecosystem — Digital Infrastructure & Computing Ecosystem" />
+    <meta property="og:title" content="Californium — Digital Infrastructure & Computing Ecosystem" />
     <meta property="og:description" content="A supply-capped, mathematically governed computing ecosystem. 10M CCUs. 5 Tiers. Zero volatility." />
-    <meta property="og:site_name" content="Californium Ecosystem" />
+    <meta property="og:site_name" content="Californium" />
     <meta property="og:url" content="https://californiumecosystem.online/" />
     <meta property="og:image" content="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200&q=80" />
     
@@ -1160,9 +1161,172 @@
             .ps-card, .gov-card, .about-card { padding: 28px; }
             .californium-form-container { padding: 24px 18px; }
         }
+
+        /* ===== AUTH GATE ===== */
+        body.auth-locked { overflow: hidden; }
+        #authGate {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: radial-gradient(circle at 30% 20%, rgba(255,46,146,0.18), transparent 55%),
+                        radial-gradient(circle at 80% 80%, rgba(43,108,255,0.18), transparent 55%),
+                        #05060B;
+        }
+        #authGate.hidden { display: none; }
+        .auth-card {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(15,16,26,0.92);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 34px 28px;
+            backdrop-filter: blur(12px);
+        }
+        .auth-card h1 {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
+        }
+        .auth-card .auth-sub {
+            color: rgba(255,255,255,0.55);
+            font-size: 0.88rem;
+            margin-bottom: 22px;
+        }
+        .auth-tabs {
+            display: flex;
+            gap: 6px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 22px;
+        }
+        .auth-tab-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 9px;
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .auth-tab-btn.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: #fff;
+        }
+        .auth-field { margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
+        .auth-field label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: rgba(255,255,255,0.45);
+        }
+        .auth-field input {
+            font: inherit;
+            color: #fff;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            padding: 12px 14px;
+            outline: none;
+        }
+        .auth-field input:focus { border-color: var(--accent); }
+        .auth-submit-btn {
+            width: 100%;
+            padding: 13px;
+            border-radius: 10px;
+            border: none;
+            margin-top: 6px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #fff;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        .auth-submit-btn:hover { transform: translateY(-1px); }
+        .auth-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .auth-error {
+            color: #FF6B6B;
+            font-size: 0.82rem;
+            margin-top: 12px;
+            display: none;
+        }
+        .auth-panel.hidden { display: none; }
+        #signOutBtn {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 9000;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
     </style>
 </head>
-<body>
+<body class="auth-locked">
+
+    <!-- ===== AUTH GATE (Sign Up / Sign In) ===== -->
+    <div id="authGate">
+        <div class="auth-card">
+            <h1>Welcome to <span style="color:var(--accent);">Californium</span></h1>
+            <p class="auth-sub">Please sign up or sign in to continue.</p>
+
+            <div class="auth-tabs">
+                <button type="button" class="auth-tab-btn active" id="tabSignup" onclick="switchAuthTab('signup')">Sign Up</button>
+                <button type="button" class="auth-tab-btn" id="tabSignin" onclick="switchAuthTab('signin')">Sign In</button>
+            </div>
+
+            <!-- SIGN UP PANEL -->
+            <form id="signupPanel" class="auth-panel" onsubmit="handleSignup(event)">
+                <div class="auth-field">
+                    <label for="suName">Full Name</label>
+                    <input type="text" id="suName" required placeholder="Your full name" />
+                </div>
+                <div class="auth-field">
+                    <label for="suEmail">Email</label>
+                    <input type="email" id="suEmail" required placeholder="you@example.com" />
+                </div>
+                <div class="auth-field">
+                    <label for="suPhone">Phone Number</label>
+                    <input type="tel" id="suPhone" required placeholder="+91 98765 43210" />
+                </div>
+                <div class="auth-field">
+                    <label for="suPassword">Password</label>
+                    <input type="password" id="suPassword" required minlength="6" placeholder="At least 6 characters" />
+                </div>
+                <button type="submit" class="auth-submit-btn" id="signupBtn">Create Account</button>
+            </form>
+
+            <!-- SIGN IN PANEL -->
+            <form id="signinPanel" class="auth-panel hidden" onsubmit="handleSignin(event)">
+                <div class="auth-field">
+                    <label for="siEmail">Email</label>
+                    <input type="email" id="siEmail" required placeholder="you@example.com" />
+                </div>
+                <div class="auth-field">
+                    <label for="siPassword">Password</label>
+                    <input type="password" id="siPassword" required placeholder="••••••••" />
+                </div>
+                <button type="submit" class="auth-submit-btn" id="signinBtn">Sign In</button>
+            </form>
+
+            <p class="auth-error" id="authError"></p>
+        </div>
+    </div>
+
+    <button id="signOutBtn" class="hidden" onclick="handleSignout()">Log Out</button>
 
     <div class="site-video-wrap" aria-hidden="true">
         <video autoplay muted loop playsinline poster="assets/hero-smoke-poster.jpg">
@@ -1732,6 +1896,7 @@
 
         // ===== FIREBASE INIT (wrapped so a failure here never breaks the rest of the page) =====
         let db = null;
+        let auth = null;
         try {
             const firebaseConfig = {
                 apiKey: "AIzaSyCELxT1xsQ9rxm6srkZjCcJIvqAeXCbv5o",
@@ -1744,8 +1909,93 @@
             };
             firebase.initializeApp(firebaseConfig);
             db = firebase.firestore();
+            auth = firebase.auth();
         } catch (err) {
             console.error('Firebase failed to initialize:', err);
+        }
+
+        // ===== AUTH GATE LOGIC =====
+        function switchAuthTab(tab) {
+            const isSignup = tab === 'signup';
+            document.getElementById('tabSignup').classList.toggle('active', isSignup);
+            document.getElementById('tabSignin').classList.toggle('active', !isSignup);
+            document.getElementById('signupPanel').classList.toggle('hidden', !isSignup);
+            document.getElementById('signinPanel').classList.toggle('hidden', isSignup);
+            document.getElementById('authError').style.display = 'none';
+        }
+
+        function showAuthError(msg) {
+            const el = document.getElementById('authError');
+            el.textContent = msg;
+            el.style.display = 'block';
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            if (!auth || !db) { showAuthError('সিস্টেম সংযোগে সমস্যা হয়েছে, পেজ রিফ্রেশ করুন।'); return; }
+            const name = document.getElementById('suName').value.trim();
+            const email = document.getElementById('suEmail').value.trim();
+            const phone = document.getElementById('suPhone').value.trim();
+            const password = document.getElementById('suPassword').value;
+            const btn = document.getElementById('signupBtn');
+            btn.disabled = true;
+            btn.textContent = 'Creating account…';
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(function(cred) {
+                    return db.collection('users').doc(cred.user.uid).set({
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .catch(function(error) {
+                    showAuthError('সাইনআপ ব্যর্থ হয়েছে: ' + error.message);
+                })
+                .finally(function() {
+                    btn.disabled = false;
+                    btn.textContent = 'Create Account';
+                });
+        }
+
+        function handleSignin(event) {
+            event.preventDefault();
+            if (!auth) { showAuthError('সিস্টেম সংযোগে সমস্যা হয়েছে, পেজ রিফ্রেশ করুন।'); return; }
+            const email = document.getElementById('siEmail').value.trim();
+            const password = document.getElementById('siPassword').value;
+            const btn = document.getElementById('signinBtn');
+            btn.disabled = true;
+            btn.textContent = 'Signing in…';
+
+            auth.signInWithEmailAndPassword(email, password)
+                .catch(function(error) {
+                    showAuthError('সাইনইন ব্যর্থ হয়েছে: ভুল ইমেইল বা পাসওয়ার্ড।');
+                })
+                .finally(function() {
+                    btn.disabled = false;
+                    btn.textContent = 'Sign In';
+                });
+        }
+
+        function handleSignout() {
+            if (auth) auth.signOut();
+        }
+
+        if (auth) {
+            auth.onAuthStateChanged(function(user) {
+                const gate = document.getElementById('authGate');
+                const signOutBtn = document.getElementById('signOutBtn');
+                if (user) {
+                    gate.classList.add('hidden');
+                    document.body.classList.remove('auth-locked');
+                    signOutBtn.classList.remove('hidden');
+                } else {
+                    gate.classList.remove('hidden');
+                    document.body.classList.add('auth-locked');
+                    signOutBtn.classList.add('hidden');
+                }
+            });
         }
 
         // ===== FORM SUBMITTED → SAVE TO FIRESTORE =====
