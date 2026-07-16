@@ -300,6 +300,17 @@
             color: var(--accent-2);
         }
 
+        .nav-links a#signOutBtn {
+            color: var(--danger);
+        }
+
+        .nav-links a#signOutBtn:hover {
+            background: rgba(255, 92, 122, 0.12);
+            color: var(--danger);
+        }
+
+        .nav-links a.hidden { display: none; }
+
         .nav-cta { display: flex; align-items: center; gap: 10px; }
 
         .mobile-toggle {
@@ -1260,19 +1271,6 @@
             display: none;
         }
         .auth-panel.hidden { display: none; }
-        #signOutBtn {
-            position: fixed;
-            top: 16px;
-            right: 16px;
-            z-index: 9000;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: #fff;
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body class="auth-locked">
@@ -1326,8 +1324,6 @@
         </div>
     </div>
 
-    <button id="signOutBtn" class="hidden" onclick="handleSignout()">Log Out</button>
-
     <div class="site-video-wrap" aria-hidden="true">
         <video autoplay muted loop playsinline poster="assets/hero-smoke-poster.jpg">
             <source src="assets/hero-smoke.webm" type="video/webm">
@@ -1351,6 +1347,7 @@
                 <a href="#roadmap">Roadmap</a>
                 <a href="#faq">FAQ</a>
                 <a href="#booking" class="nav-booking">Booking</a>
+                <a href="#" id="signOutBtn" class="hidden" onclick="handleSignout(); return false;">Log Out</a>
             </nav>
             <div class="nav-cta">
                 <a href="#booking" class="btn btn-primary btn-sm">Register Free</a>
@@ -1376,7 +1373,7 @@
                         </p>
                         <div class="hero-actions">
                             <a href="#matrix" class="btn btn-primary">Explore Price Matrix →</a>
-                            <a href="https://drive.google.com/uc?export=download&id=1PFfyW7D86LiP5TUDk8ugNiAoF3-rubj-" target="_blank" class="btn btn-ghost">⬇ Download Whitepaper</a>
+                            <a href="https://drive.google.com/uc?export=download&id=1hNdthqV4Ig4rK4_h4LK2bkCP4eruHzba" target="_blank" class="btn btn-ghost">⬇ Download Whitepaper</a>
                         </div>
                         <div class="hero-meta">
                             <div class="hero-meta-item">
@@ -1627,7 +1624,7 @@
                         <h3 style="margin-top:14px">Californium Whitepaper v1.0</h3>
                         <p>The complete technical &amp; governance specification — June 2026 release. Recommended reading before any allocation.</p>
                     </div>
-                    <a href="https://drive.google.com/uc?export=download&id=1PFfyW7D86LiP5TUDk8ugNiAoF3-rubj-" target="_blank" class="btn btn-primary">⬇ Download PDF</a>
+                    <a href="https://drive.google.com/uc?export=download&id=1hNdthqV4Ig4rK4_h4LK2bkCP4eruHzba" target="_blank" class="btn btn-primary">⬇ Download PDF</a>
                 </div>
             </div>
         </section>
